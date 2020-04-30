@@ -1,24 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { BASE_AZURE_URL } from './config';
 
 function App() {
+  const [projects, addProject] = useState([]);
+  
+  useEffect(() => {
+    const consultarAPI = async () => {
+      const url = `${BASE_AZURE_URL}/projects`;
+      const result = await axios.get(url, { headers: { Authorization: `Basic PAT` } });
+
+      console.log(result.data.value);
+
+      addProject(result.data.value)
+    };
+
+    consultarAPI();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <ul>
+        {
+          projects.map(project => (<li key={project.id}>{project.name}</li>))
+        }
+      </ul>
     </div>
   );
 }

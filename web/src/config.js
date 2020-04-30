@@ -1,0 +1,1 @@
+export const BASE_AZURE_URL = 'https://dev.azure.com/draw507/_apis';
